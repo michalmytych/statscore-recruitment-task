@@ -37,7 +37,7 @@ final readonly class EventHandler
     {
         return [
             'status' => 'success',
-            'message' => 'Event saved successfully',
+            'message' => 'Event processed successfully',
             'event' => $eventData
         ];
     }

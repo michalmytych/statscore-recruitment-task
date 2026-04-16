@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 final class ApiHelper
 {
-    public function getJsonBody(Request $request): array
+    public function getJsonBody(Request $request): ?array
     {
         $data = $request->getBody()->getContents();
         return json_decode($data, true);

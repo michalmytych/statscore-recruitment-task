@@ -52,7 +52,8 @@ class EventApiCest
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([
-            'errors' => [
+            'error' => 'Validation failed',
+            'details' => [
                 'Field "match_id" is required and must be a non-empty string',
                 'Field "team_at_fault_id" is required and must be a non-empty string'
             ]

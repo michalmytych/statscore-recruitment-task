@@ -35,15 +35,9 @@ final class MatchController
         $errors = $this->getEventValidationErrors($data);
 
         if (count($errors) > 0) {
-            if ($data['type'] === 'foul' && isset($errors['matchId'], $errors['teamAtFaultId'])) {
-                return $this->apiHelper->getJsonResponse($response, [
-                    'error' => 'match_id and team_id are required for foul events',
-                ], 400);
-            }
-
             return $this->apiHelper->getJsonResponse($response, [
                 'error' => 'Validation failed',
-                'details' => $errors,
+                'details' => array_values($errors),
             ], 400);
         }
 
@@ -51,10 +45,10 @@ final class MatchController
         // As it is also kinda related to business logic that would be probably another reason to move it
         $event = match ($data['type']) {
             'foul' => new \App\Match\Event\FoulEvent(
-                matchId: $data['matchId'],
-                teamAtFaultId: $data['teamAtFaultId'],
-                playerAtFault: $data['playerAtFault'],
-                affectedPlayer: $data['affectedPlayer'],
+                matchId: $data['match_id'],
+                teamAtFaultId: $data['team_at_fault_id'],
+                playerAtFault: $data['player_at_fault'],
+                affectedPlayer: $data['affected_player'],
                 eventTime: new MatchEventTime(
                     occurenceMinutes: $data['minute'],
                     occurenceSeconds: $data['second'],
@@ -62,11 +56,11 @@ final class MatchController
                 )
             ),
             'goal' => new \App\Match\Event\GoalEvent(
-                matchId: $data['matchId'],
-                teamId: $data['teamId'],
-                scorerPlayer: $data['scorerPlayer'],
-                assistingPlayer: $data['assistingPlayer'],
-                eventTime: new \App\Match\Events\MatchEventTime(
+                matchId: $data['match_id'],
+                teamId: $data['team_id'],
+                scorerPlayer: $data['scorer'],
+                assistingPlayer: $data['assisting_player'],
+                eventTime: new MatchEventTime(
                     occurenceMinutes: $data['minute'],
                     occurenceSeconds: $data['second'],
                     timestamp: null
@@ -82,6 +76,7 @@ final class MatchController
         }
 
         $handlerResponse = $this->eventHandler->handleEvent($event);
+        $handlerResponse['message'] = 'Event saved successfully';
 
         return $this->apiHelper->getJsonResponse($response, $handlerResponse, 201);
     }
