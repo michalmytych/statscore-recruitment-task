@@ -1,0 +1,412 @@
+Codeception PHP Testing Framework v5.3.2 https://stand-with-ukraine.pp.ua
+
+[1mTests.Api Tests (9) [22m-------------------------------------------------------------------------------------------------------------------
+- [35;1mEventApiCest:[39;22m Test foul event[31;1m✖[39;22m [35;1mEventApiCest:[39;22m Test foul event[32m (0.02s)[39m
+- [35;1mEventApiCest:[39;22m Test foul event without required fields[31;1m✖[39;22m [35;1mEventApiCest:[39;22m Test foul event without required fields[32m (0.00s)[39m
+- [35;1mEventApiCest:[39;22m Test invalid json[31;1m✖[39;22m [35;1mEventApiCest:[39;22m Test invalid json[32m (0.00s)[39m
+- [35;1mEventApiCest:[39;22m Test event without type[31;1m✖[39;22m [35;1mEventApiCest:[39;22m Test event without type[32m (0.00s)[39m
+- [35;1mStatisticsApiCest:[39;22m Test get team statistics[31;1m✖[39;22m [35;1mStatisticsApiCest:[39;22m Test get team statistics[32m (0.01s)[39m
+- [35;1mStatisticsApiCest:[39;22m Test get match statistics[31;1m✖[39;22m [35;1mStatisticsApiCest:[39;22m Test get match statistics[32m (0.00s)[39m
+- [35;1mStatisticsApiCest:[39;22m Test get statistics without match id[31;1m✖[39;22m [35;1mStatisticsApiCest:[39;22m Test get statistics without match id[32m (0.00s)[39m
+- [35;1mStatisticsApiCest:[39;22m Test get statistics for non existent team[31;1m✖[39;22m [35;1mStatisticsApiCest:[39;22m Test get statistics for non existent team[32m (0.00s)[39m
+- [35;1mStatisticsApiCest:[39;22m Test get statistics for non existent match[31;1m✖[39;22m [35;1mStatisticsApiCest:[39;22m Test get statistics for non existent match[32m (0.00s)[39m
+---------------------------------------------------------------------------------------------------------------------------------------
+
+[1mTests.Unit Tests (6) [22m------------------------------------------------------------------------------------------------------------------
+- [35;1mEventHandlerTest:[39;22m Handle goal event[31;1mE[39;22m [35;1mEventHandlerTest:[39;22m Handle goal event[32m (0.01s)[39m
+- [35;1mEventHandlerTest:[39;22m Handle event without type[31;1m✖[39;22m [35;1mEventHandlerTest:[39;22m Handle event without type[32m (0.00s)[39m
+- [35;1mEventHandlerTest:[39;22m Event is saved to file[31;1mE[39;22m [35;1mEventHandlerTest:[39;22m Event is saved to file[32m (0.00s)[39m
+- [35;1mEventHandlerTest:[39;22m Handle foul event updates statistics[31;1mE[39;22m [35;1mEventHandlerTest:[39;22m Handle foul event updates statistics[32m (0.00s)[39m
+- [35;1mEventHandlerTest:[39;22m Handle multiple foul events increments statistics[31;1mE[39;22m [35;1mEventHandlerTest:[39;22m Handle multiple foul events increments statistics[32m (0.00s)[39m
+- [35;1mEventHandlerTest:[39;22m Handle foul event without required fields[31;1m✖[39;22m [35;1mEventHandlerTest:[39;22m Handle foul event without required fields[32m (0.00s)[39m
+---------------------------------------------------------------------------------------------------------------------------------------
+Time: 00:00.163, Memory: 18.00 MB
+
+There were 4 errors:
+1) [35;1mEventHandlerTest:[39;22m Handle goal event
+[37;41;1m Test  [39;49;22mtests/Unit/EventHandlerTest.php:testHandleGoalEvent
+[37;41;1m                                                                                                                                                                                                            [39;49;22m
+[37;41;1m  [TypeError] App\EventHandler::__construct(): Argument #1 ($foulEventHandler) must be of type App\Match\Handler\FoulEventHandler, string given, called in /app/tests/Unit/EventHandlerTest.php on line 33  [39;49;22m
+[37;41;1m                                                                                                                                                                                                            [39;49;22m
+#1  /app/src/EventHandler.php:13
+#2  /app/tests/Unit/EventHandlerTest.php:33
+#3  /app/vendor/bin/codecept:119
+2) [35;1mEventHandlerTest:[39;22m Event is saved to file
+[37;41;1m Test  [39;49;22mtests/Unit/EventHandlerTest.php:testEventIsSavedToFile
+[37;41;1m                                                                                                                                                                                                            [39;49;22m
+[37;41;1m  [TypeError] App\EventHandler::__construct(): Argument #1 ($foulEventHandler) must be of type App\Match\Handler\FoulEventHandler, string given, called in /app/tests/Unit/EventHandlerTest.php on line 62  [39;49;22m
+[37;41;1m                                                                                                                                                                                                            [39;49;22m
+#1  /app/src/EventHandler.php:13
+#2  /app/tests/Unit/EventHandlerTest.php:62
+#3  /app/vendor/bin/codecept:119
+3) [35;1mEventHandlerTest:[39;22m Handle foul event updates statistics
+[37;41;1m Test  [39;49;22mtests/Unit/EventHandlerTest.php:testHandleFoulEventUpdatesStatistics
+[37;41;1m                                                                                                                                                                                                            [39;49;22m
+[37;41;1m  [TypeError] App\EventHandler::__construct(): Argument #1 ($foulEventHandler) must be of type App\Match\Handler\FoulEventHandler, string given, called in /app/tests/Unit/EventHandlerTest.php on line 80  [39;49;22m
+[37;41;1m                                                                                                                                                                                                            [39;49;22m
+#1  /app/src/EventHandler.php:13
+#2  /app/tests/Unit/EventHandlerTest.php:80
+#3  /app/vendor/bin/codecept:119
+4) [35;1mEventHandlerTest:[39;22m Handle multiple foul events increments statistics
+[37;41;1m Test  [39;49;22mtests/Unit/EventHandlerTest.php:testHandleMultipleFoulEventsIncrementsStatistics
+[37;41;1m                                                                                                                                                                                                             [39;49;22m
+[37;41;1m  [TypeError] App\EventHandler::__construct(): Argument #1 ($foulEventHandler) must be of type App\Match\Handler\FoulEventHandler, string given, called in /app/tests/Unit/EventHandlerTest.php on line 106  [39;49;22m
+[37;41;1m                                                                                                                                                                                                             [39;49;22m
+#1  /app/src/EventHandler.php:13
+#2  /app/tests/Unit/EventHandlerTest.php:106
+#3  /app/vendor/bin/codecept:119
+
+---------
+
+There were 11 failures:
+1) [35;1mEventApiCest:[39;22m Test foul event
+[37;41;1m Test  [39;49;22mtests/Api/EventApiCest.php:testFoulEvent
+[37;41;1m Step [39;49;22m See response code is 201
+[37;41;1m Fail [39;49;22m Expected HTTP Status Code: 201 (Created). Actual Status Code: 200 (OK)
+Failed asserting that 200 is identical to 201.
+[33m
+Scenario Steps:
+[39m
+[1m 5. $I->seeResponseCodeIs(201)[22m at [32mtests/Api/EventApiCest.php:28[39m
+ 4. $I->sendPost("/event",{"type":"foul","player":"William Saliba","team_id":"arsenal","match_id":"m1","minute":45,"second":34}) at [32mtests/Api/EventApiCest.php:19[39m
+ 3. $I->haveHttpHeader("Content-Type","application/json") at [32mtests/Api/EventApiCest.php:18[39m
+ 2. $I->deleteFile("storage/statistics.txt") at [32mtests/Api/EventApiCest.php:13[39m
+ 1. $I->deleteFile("storage/events.txt") at [32mtests/Api/EventApiCest.php:12[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.EventApiCest.testFoulEvent.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.EventApiCest.testFoulEvent.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+2) [35;1mEventApiCest:[39;22m Test foul event without required fields
+[37;41;1m Test  [39;49;22mtests/Api/EventApiCest.php:testFoulEventWithoutRequiredFields
+[37;41;1m Step [39;49;22m See response code is 400
+[37;41;1m Fail [39;49;22m Expected HTTP Status Code: 400 (Bad Request). Actual Status Code: 200 (OK)
+Failed asserting that 200 is identical to 400.
+[33m
+Scenario Steps:
+[39m
+[1m 5. $I->seeResponseCodeIs(400)[22m at [32mtests/Api/EventApiCest.php:48[39m
+ 4. $I->sendPost("/event",{"type":"foul","player":"William Saliba","minute":45,"second":34}) at [32mtests/Api/EventApiCest.php:40[39m
+ 3. $I->haveHttpHeader("Content-Type","application/json") at [32mtests/Api/EventApiCest.php:39[39m
+ 2. $I->deleteFile("storage/statistics.txt") at [32mtests/Api/EventApiCest.php:13[39m
+ 1. $I->deleteFile("storage/events.txt") at [32mtests/Api/EventApiCest.php:12[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.EventApiCest.testFoulEventWithoutRequiredFields.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.EventApiCest.testFoulEventWithoutRequiredFields.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+3) [35;1mEventApiCest:[39;22m Test invalid json
+[37;41;1m Test  [39;49;22mtests/Api/EventApiCest.php:testInvalidJson
+[37;41;1m Step [39;49;22m See response code is 400
+[37;41;1m Fail [39;49;22m Expected HTTP Status Code: 400 (Bad Request). Actual Status Code: 200 (OK)
+Failed asserting that 200 is identical to 400.
+[33m
+Scenario Steps:
+[39m
+[1m 5. $I->seeResponseCodeIs(400)[22m at [32mtests/Api/EventApiCest.php:60[39m
+ 4. $I->sendPost("/event","invalid json") at [32mtests/Api/EventApiCest.php:58[39m
+ 3. $I->haveHttpHeader("Content-Type","application/json") at [32mtests/Api/EventApiCest.php:57[39m
+ 2. $I->deleteFile("storage/statistics.txt") at [32mtests/Api/EventApiCest.php:13[39m
+ 1. $I->deleteFile("storage/events.txt") at [32mtests/Api/EventApiCest.php:12[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.EventApiCest.testInvalidJson.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.EventApiCest.testInvalidJson.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+4) [35;1mEventApiCest:[39;22m Test event without type
+[37;41;1m Test  [39;49;22mtests/Api/EventApiCest.php:testEventWithoutType
+[37;41;1m Step [39;49;22m See response code is 400
+[37;41;1m Fail [39;49;22m Expected HTTP Status Code: 400 (Bad Request). Actual Status Code: 200 (OK)
+Failed asserting that 200 is identical to 400.
+[33m
+Scenario Steps:
+[39m
+[1m 5. $I->seeResponseCodeIs(400)[22m at [32mtests/Api/EventApiCest.php:76[39m
+ 4. $I->sendPost("/event",{"player":"John Doe","minute":23,"second":34}) at [32mtests/Api/EventApiCest.php:70[39m
+ 3. $I->haveHttpHeader("Content-Type","application/json") at [32mtests/Api/EventApiCest.php:69[39m
+ 2. $I->deleteFile("storage/statistics.txt") at [32mtests/Api/EventApiCest.php:13[39m
+ 1. $I->deleteFile("storage/events.txt") at [32mtests/Api/EventApiCest.php:12[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.EventApiCest.testEventWithoutType.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.EventApiCest.testEventWithoutType.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+5) [35;1mStatisticsApiCest:[39;22m Test get team statistics
+[37;41;1m Test  [39;49;22mtests/Api/StatisticsApiCest.php:testGetTeamStatistics
+[37;41;1m Step [39;49;22m See response is json 
+[37;41;1m Fail [39;49;22m Invalid json: <br />
+<b>Fatal error</b>:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in <b>/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php</b> on line <b>76</b><br />
+. System message: Syntax error.
+Failed asserting that 4 is identical to 0.
+[33m
+Scenario Steps:
+[39m
+[1m 9. $I->seeResponseIsJson()[22m at [32mtests/Api/StatisticsApiCest.php:43[39m
+ 8. $I->seeResponseCodeIs(200) at [32mtests/Api/StatisticsApiCest.php:42[39m
+ 7. $I->sendGet("/statistics?match_id=m1&team_id=arsenal") at [32mtests/Api/StatisticsApiCest.php:40[39m
+ 6. $I->sendPost("/event",{"type":"foul","player":"Gabriel Jesus","team_id":"arsenal","match_id":"m1","minute":30,"second":33}) at [32mtests/Api/StatisticsApiCest.php:30[39m
+ 5. $I->haveHttpHeader("Content-Type","application/json") at [32mtests/Api/StatisticsApiCest.php:29[39m
+ 4. $I->sendPost("/event",{"type":"foul","player":"William Saliba","team_id":"arsenal","match_id":"m1","minute":15,"second":34}) at [32mtests/Api/StatisticsApiCest.php:20[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetTeamStatistics.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetTeamStatistics.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+6) [35;1mStatisticsApiCest:[39;22m Test get match statistics
+[37;41;1m Test  [39;49;22mtests/Api/StatisticsApiCest.php:testGetMatchStatistics
+[37;41;1m Step [39;49;22m See response is json 
+[37;41;1m Fail [39;49;22m Invalid json: <br />
+<b>Fatal error</b>:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in <b>/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php</b> on line <b>76</b><br />
+. System message: Syntax error.
+Failed asserting that 4 is identical to 0.
+[33m
+Scenario Steps:
+[39m
+[1m 9. $I->seeResponseIsJson()[22m at [32mtests/Api/StatisticsApiCest.php:80[39m
+ 8. $I->seeResponseCodeIs(200) at [32mtests/Api/StatisticsApiCest.php:79[39m
+ 7. $I->sendGet("/statistics?match_id=m1") at [32mtests/Api/StatisticsApiCest.php:77[39m
+ 6. $I->sendPost("/event",{"type":"foul","player":"Virgil van Dijk","team_id":"liverpool","match_id":"m1","minute":30,"second":33}) at [32mtests/Api/StatisticsApiCest.php:67[39m
+ 5. $I->haveHttpHeader("Content-Type","application/json") at [32mtests/Api/StatisticsApiCest.php:66[39m
+ 4. $I->sendPost("/event",{"type":"foul","player":"William Saliba","team_id":"arsenal","match_id":"m1","minute":15,"second":34}) at [32mtests/Api/StatisticsApiCest.php:57[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetMatchStatistics.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetMatchStatistics.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+7) [35;1mStatisticsApiCest:[39;22m Test get statistics without match id
+[37;41;1m Test  [39;49;22mtests/Api/StatisticsApiCest.php:testGetStatisticsWithoutMatchId
+[37;41;1m Step [39;49;22m See response code is 400
+[37;41;1m Fail [39;49;22m Expected HTTP Status Code: 400 (Bad Request). Actual Status Code: 200 (OK)
+Failed asserting that 200 is identical to 400.
+[33m
+Scenario Steps:
+[39m
+[1m 4. $I->seeResponseCodeIs(400)[22m at [32mtests/Api/StatisticsApiCest.php:98[39m
+ 3. $I->sendGet("/statistics") at [32mtests/Api/StatisticsApiCest.php:96[39m
+ 2. $I->deleteFile("storage/statistics.txt") at [32mtests/Api/StatisticsApiCest.php:13[39m
+ 1. $I->deleteFile("storage/events.txt") at [32mtests/Api/StatisticsApiCest.php:12[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetStatisticsWithoutMatchId.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetStatisticsWithoutMatchId.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+8) [35;1mStatisticsApiCest:[39;22m Test get statistics for non existent team
+[37;41;1m Test  [39;49;22mtests/Api/StatisticsApiCest.php:testGetStatisticsForNonExistentTeam
+[37;41;1m Step [39;49;22m See response is json 
+[37;41;1m Fail [39;49;22m Invalid json: <br />
+<b>Fatal error</b>:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in <b>/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php</b> on line <b>76</b><br />
+. System message: Syntax error.
+Failed asserting that 4 is identical to 0.
+[33m
+Scenario Steps:
+[39m
+[1m 5. $I->seeResponseIsJson()[22m at [32mtests/Api/StatisticsApiCest.php:110[39m
+ 4. $I->seeResponseCodeIs(200) at [32mtests/Api/StatisticsApiCest.php:109[39m
+ 3. $I->sendGet("/statistics?match_id=m1&team_id=nonexistent") at [32mtests/Api/StatisticsApiCest.php:107[39m
+ 2. $I->deleteFile("storage/statistics.txt") at [32mtests/Api/StatisticsApiCest.php:13[39m
+ 1. $I->deleteFile("storage/events.txt") at [32mtests/Api/StatisticsApiCest.php:12[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetStatisticsForNonExistentTeam.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetStatisticsForNonExistentTeam.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+9) [35;1mStatisticsApiCest:[39;22m Test get statistics for non existent match
+[37;41;1m Test  [39;49;22mtests/Api/StatisticsApiCest.php:testGetStatisticsForNonExistentMatch
+[37;41;1m Step [39;49;22m See response is json 
+[37;41;1m Fail [39;49;22m Invalid json: <br />
+<b>Fatal error</b>:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in <b>/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php</b> on line <b>76</b><br />
+. System message: Syntax error.
+Failed asserting that 4 is identical to 0.
+[33m
+Scenario Steps:
+[39m
+[1m 5. $I->seeResponseIsJson()[22m at [32mtests/Api/StatisticsApiCest.php:123[39m
+ 4. $I->seeResponseCodeIs(200) at [32mtests/Api/StatisticsApiCest.php:122[39m
+ 3. $I->sendGet("/statistics?match_id=nonexistent") at [32mtests/Api/StatisticsApiCest.php:120[39m
+ 2. $I->deleteFile("storage/statistics.txt") at [32mtests/Api/StatisticsApiCest.php:13[39m
+ 1. $I->deleteFile("storage/events.txt") at [32mtests/Api/StatisticsApiCest.php:12[39m
+
+[33mArtifacts:[39m
+
+Html: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetStatisticsForNonExistentMatch.fail.html[39m
+Response: [36m/app/tests/_output/Tests.Api.StatisticsApiCest.testGetStatisticsForNonExistentMatch.fail.html[39m
+Body: [36m<br />[39m[36m
+[39m[36m<b>[39m[36mFatal error[39m[36m</b>[39m[36m:  Uncaught Slim\Exception\HttpNotFoundException: Not found. in /app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php:76
+Stack trace:
+#0 /app/vendor/slim/slim/Slim/Routing/RouteRunner.php(62): Slim\Middleware\RoutingMiddleware-&gt;performRouting(Object(GuzzleHttp\Psr7\ServerRequest))
+#1 /app/vendor/slim/slim/Slim/MiddlewareDispatcher.php(73): Slim\Routing\RouteRunner-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#2 /app/vendor/slim/slim/Slim/App.php(209): Slim\MiddlewareDispatcher-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#3 /app/vendor/slim/slim/Slim/App.php(193): Slim\App-&gt;handle(Object(GuzzleHttp\Psr7\ServerRequest))
+#4 /app/public/index.php(16): Slim\App-&gt;run()
+#5 {main}
+  thrown in [39m[36m<b>[39m[36m/app/vendor/slim/slim/Slim/Middleware/RoutingMiddleware.php[39m[36m</b>[39m[36m on line [39m[36m<b>[39m[36m76[39m[36m</b>[39m[36m<br />[39m[36m
+[39m
+10) [35;1mEventHandlerTest:[39;22m Handle event without type
+[37;41;1m Test  [39;49;22mtests/Unit/EventHandlerTest.php:testHandleEventWithoutType
+Failed asserting that exception of type "TypeError" matches expected exception "InvalidArgumentException". Message was: "App\EventHandler::__construct(): Argument #1 ($foulEventHandler) must be of type App\Match\Handler\FoulEventHandler, string given, called in /app/tests/Unit/EventHandlerTest.php on line 54" at
+/app/src/EventHandler.php:13
+/app/tests/Unit/EventHandlerTest.php:54
+/app/vendor/codeception/codeception/src/Codeception/Test/TestCaseWrapper.php:139
+/app/vendor/codeception/codeception/src/Codeception/Test/Test.php:157
+/app/vendor/codeception/codeception/src/Codeception/Suite.php:131
+/app/vendor/codeception/codeception/src/Codeception/SuiteManager.php:141
+/app/vendor/codeception/codeception/src/Codeception/Codecept.php:244
+/app/vendor/codeception/codeception/src/Codeception/Codecept.php:206
+/app/vendor/codeception/codeception/src/Codeception/Command/Run.php:581
+/app/vendor/codeception/codeception/src/Codeception/Command/Run.php:402
+/app/vendor/symfony/console/Command/Command.php:318
+/app/vendor/symfony/console/Application.php:1092
+/app/vendor/symfony/console/Application.php:359
+/app/vendor/symfony/console/Application.php:194
+/app/vendor/codeception/codeception/src/Codeception/Application.php:101
+/app/vendor/codeception/codeception/app.php:45
+/app/vendor/codeception/codeception/app.php:46
+/app/vendor/codeception/codeception/codecept:7
+.
+#1  /app/vendor/bin/codecept:119
+11) [35;1mEventHandlerTest:[39;22m Handle foul event without required fields
+[37;41;1m Test  [39;49;22mtests/Unit/EventHandlerTest.php:testHandleFoulEventWithoutRequiredFields
+Failed asserting that exception of type "TypeError" matches expected exception "InvalidArgumentException". Message was: "App\EventHandler::__construct(): Argument #1 ($foulEventHandler) must be of type App\Match\Handler\FoulEventHandler, string given, called in /app/tests/Unit/EventHandlerTest.php on line 140" at
+/app/src/EventHandler.php:13
+/app/tests/Unit/EventHandlerTest.php:140
+/app/vendor/codeception/codeception/src/Codeception/Test/TestCaseWrapper.php:139
+/app/vendor/codeception/codeception/src/Codeception/Test/Test.php:157
+/app/vendor/codeception/codeception/src/Codeception/Suite.php:131
+/app/vendor/codeception/codeception/src/Codeception/SuiteManager.php:141
+/app/vendor/codeception/codeception/src/Codeception/Codecept.php:244
+/app/vendor/codeception/codeception/src/Codeception/Codecept.php:206
+/app/vendor/codeception/codeception/src/Codeception/Command/Run.php:581
+/app/vendor/codeception/codeception/src/Codeception/Command/Run.php:402
+/app/vendor/symfony/console/Command/Command.php:318
+/app/vendor/symfony/console/Application.php:1092
+/app/vendor/symfony/console/Application.php:359
+/app/vendor/symfony/console/Application.php:194
+/app/vendor/codeception/codeception/src/Codeception/Application.php:101
+/app/vendor/codeception/codeception/app.php:45
+/app/vendor/codeception/codeception/app.php:46
+/app/vendor/codeception/codeception/codecept:7
+.
+#1  /app/vendor/bin/codecept:119
+
+[37;41;1mERRORS![39;49;22m
+[37;41;1mTests: 15, Assertions: 17, Errors: 4, Failures: 11.[39;49;22m

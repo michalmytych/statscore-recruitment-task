@@ -10,11 +10,11 @@ use App\Match\Events\MatchEventTime;
 final readonly class FoulEvent implements EventInterface
 {
     public function __construct(
-        string $matchId,
-        string $teamAtFaultId,
-        string $playerAtFault,
-        string $affectedPlayer,
-        MatchEventTime $eventTime,
+        public string $matchId,
+        public string $teamAtFaultId,
+        public string $playerAtFault,
+        public string $affectedPlayer,
+        public MatchEventTime $eventTime,
     ) {
     }
 }

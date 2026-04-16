@@ -10,11 +10,11 @@ use App\Match\Events\MatchEventTime;
 final readonly class GoalEvent implements EventInterface
 {
     public function __construct(
-        string $matchId,
-        string $teamId,
-        string $scorerPlayer,
-        string $assistingPlayer,
-        MatchEventTime $eventTime,
+        public string $matchId,
+        public string $teamId,
+        public string $scorerPlayer,
+        public string $assistingPlayer,
+        public MatchEventTime $eventTime,
     ) {
     }
 }

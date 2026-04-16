@@ -1,67 +1,48 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+declare(strict_types=1);
 
-use App\EventHandler;
+require __DIR__ . '/../vendor/autoload.php';
+
 use App\StatisticsManager;
+use Api\MatchController;
+use DI\Bridge\Slim\Bridge;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
-header('Content-Type: application/json');
+$app = Bridge::create();
 
-// Simple routing
-$method = $_SERVER['REQUEST_METHOD'];
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$app->post('/event', [MatchController::class, 'storeEvent']);
 
-if ($method === 'POST' && $path === '/event') {
-    $input = file_get_contents('php://input');
-    $data = json_decode($input, true);
-    
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Invalid JSON']);
-        exit;
-    }
-    
-    $handler = new EventHandler(__DIR__ . '/../storage/events.txt');
-    
-    try {
-        $result = $handler->handleEvent($data);
-        http_response_code(201);
-        echo json_encode($result);
-    } catch (Exception $e) {
-        http_response_code(400);
-        echo json_encode(['error' => $e->getMessage()]);
-    }
-} elseif ($method === 'GET' && $path === '/statistics') {
+$app->get('/statistics', function (Request $request, Response $response): Response {
     $statsManager = new StatisticsManager(__DIR__ . '/../storage/statistics.txt');
-    
-    $matchId = $_GET['match_id'] ?? null;
-    $teamId = $_GET['team_id'] ?? null;
-    
-    try {
-        if ($matchId && $teamId) {
-            // Get team statistics for specific match
-            $stats = $statsManager->getTeamStatistics($matchId, $teamId);
-            echo json_encode([
-                'match_id' => $matchId,
-                'team_id' => $teamId,
-                'statistics' => $stats
-            ]);
-        } elseif ($matchId) {
-            // Get all team statistics for specific match
-            $stats = $statsManager->getMatchStatistics($matchId);
-            echo json_encode([
-                'match_id' => $matchId,
-                'statistics' => $stats
-            ]);
-        } else {
-            http_response_code(400);
-            echo json_encode(['error' => 'match_id is required']);
-        }
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode(['error' => $e->getMessage()]);
+
+    $queryParams = $request->getQueryParams();
+    $matchId = $queryParams['match_id'] ?? null;
+    $teamId = $queryParams['team_id'] ?? null;
+
+    if (!$matchId) {
+        $response->getBody()->write(json_encode([
+            'error' => 'match_id is required',
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(400);
     }
-} else {
-    http_response_code(404);
-    echo json_encode(['error' => 'Not found']);
-}
+
+    $payload = ['match_id' => $matchId];
+
+    if ($teamId) {
+        $payload['team_id'] = $teamId;
+        $payload['statistics'] = $statsManager->getTeamStatistics($matchId, $teamId);
+    } else {
+        $payload['statistics'] = $statsManager->getMatchStatistics($matchId);
+    }
+
+    $response->getBody()->write(json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$app->run();
