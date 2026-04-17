@@ -7,30 +7,26 @@ use App\EventHandler;
 use App\FileStorage;
 use App\Match\Event\FoulEvent;
 use App\Match\Event\GoalEvent;
+use App\Match\Projection\StatisticsProjection;
 use App\Match\VO\MatchEventTime;
 use App\Match\Handler\FoulEventHandler;
 use App\Match\Handler\GoalEventHandler;
-use App\StatisticsManager;
 use PHPUnit\Framework\TestCase;
 
 class EventHandlerTest extends TestCase
 {
     private string $eventsFile;
-    private string $statsFile;
 
     protected function setUp(): void
     {
         $this->eventsFile = __DIR__ . '/../../storage/events.txt';
-        $this->statsFile = __DIR__ . '/../../storage/statistics.txt';
 
         @unlink($this->eventsFile);
-        @unlink($this->statsFile);
     }
 
     protected function tearDown(): void
     {
         @unlink($this->eventsFile);
-        @unlink($this->statsFile);
     }
 
     public function testHandleGoalEvent(): void
@@ -52,7 +48,7 @@ class EventHandlerTest extends TestCase
         $result = $handler->handleEvent($event);
 
         $this->assertSame('success', $result['status']);
-        $this->assertSame('Event processed successfully', $result['message']);
+        $this->assertSame('Event saved successfully', $result['message']);
         $this->assertSame('goal', $result['event']['type']);
         $this->assertArrayHasKey('timestamp', $result['event']);
         $this->assertSame('arsenal', $result['event']['data']['team_id']);
@@ -97,7 +93,8 @@ class EventHandlerTest extends TestCase
 
     public function testHandleFoulEventUpdatesStatistics(): void
     {
-        $statisticsManager = new StatisticsManager($this->statsFile);
+        $storage = new FileStorage($this->eventsFile);
+        $statisticsProjection = new StatisticsProjection();
         $handler = new EventHandler(new FoulEventHandler(), new GoalEventHandler());
 
         $result = $handler->handleEvent(new FoulEvent(
@@ -112,7 +109,7 @@ class EventHandlerTest extends TestCase
             )
         ));
 
-        $teamStats = $statisticsManager->getTeamStatistics('m1', 'arsenal');
+        $teamStats = $statisticsProjection->projectTeam($storage->getAll(), 'm1', 'arsenal');
 
         $this->assertSame('success', $result['status']);
         $this->assertSame('foul', $result['event']['type']);
@@ -122,7 +119,8 @@ class EventHandlerTest extends TestCase
 
     public function testHandleMultipleFoulEventsIncrementsStatistics(): void
     {
-        $statisticsManager = new StatisticsManager($this->statsFile);
+        $storage = new FileStorage($this->eventsFile);
+        $statisticsProjection = new StatisticsProjection();
         $handler = new EventHandler(new FoulEventHandler(), new GoalEventHandler());
 
         $handler->handleEvent(new FoulEvent(
@@ -149,14 +147,15 @@ class EventHandlerTest extends TestCase
             )
         ));
 
-        $teamStats = $statisticsManager->getTeamStatistics('match_1', 'team_a');
+        $teamStats = $statisticsProjection->projectTeam($storage->getAll(), 'match_1', 'team_a');
 
         $this->assertSame(2, $teamStats['fouls']);
     }
 
     public function testHandleGoalEventUpdatesStatistics(): void
     {
-        $statisticsManager = new StatisticsManager($this->statsFile);
+        $storage = new FileStorage($this->eventsFile);
+        $statisticsProjection = new StatisticsProjection();
         $handler = new EventHandler(new FoulEventHandler(), new GoalEventHandler());
 
         $handler->handleEvent(new GoalEvent(
@@ -171,7 +170,7 @@ class EventHandlerTest extends TestCase
             )
         ));
 
-        $teamStats = $statisticsManager->getTeamStatistics('m2', 'barcelona');
+        $teamStats = $statisticsProjection->projectTeam($storage->getAll(), 'm2', 'barcelona');
 
         $this->assertSame(1, $teamStats['goals']);
     }

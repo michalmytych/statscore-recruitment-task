@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace Api;
 
-use App\StatisticsManager;
+use App\FileStorage;
+use App\Match\Projection\StatisticsProjection;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 final class StatisticsController
 {
     public function __construct(
-        private ApiHelper $apiHelper
+        private readonly ApiHelper $apiHelper,
+        private readonly StatisticsProjection $statisticsProjection
     ) {}
 
     public function get(Request $request, Response $response): Response
     {
-        $statsManager = new StatisticsManager(__DIR__ . '/../storage/statistics.txt');
+        $storage = new FileStorage(__DIR__ . '/../storage/events.txt');
 
         $queryParams = $request->getQueryParams();
         $matchId = $queryParams['match_id'] ?? null;
@@ -32,9 +34,9 @@ final class StatisticsController
 
         if ($teamId) {
             $payload['team_id'] = $teamId;
-            $payload['statistics'] = $statsManager->getTeamStatistics($matchId, $teamId);
+            $payload['statistics'] = $this->statisticsProjection->projectTeam($storage->getAll(), $matchId, $teamId);
         } else {
-            $payload['statistics'] = $statsManager->getMatchStatistics($matchId);
+            $payload['statistics'] = $this->statisticsProjection->projectMatch($storage->getAll(), $matchId);
         }
 
         return $this->apiHelper->getJsonResponse($response, $payload);

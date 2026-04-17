@@ -12,8 +12,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 final class MatchController
 {
     public function __construct(
-        private EventHandler $eventHandler,
-        private ApiHelper $apiHelper
+        private readonly EventHandler $eventHandler,
+        private readonly ApiHelper $apiHelper
     ) {}
 
     public function storeEvent(Request $request, Response $response): Response
