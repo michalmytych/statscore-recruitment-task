@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace Persistence;
 
-class FileStorage
+final class FileStorage
 {
     private string $filePath;
     

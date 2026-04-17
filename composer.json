@@ -17,7 +17,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "Api\\": "api/"
+            "Api\\": "api/",
+            "Persistence\\": "persistence/"
         }
     },
     "autoload-dev": {

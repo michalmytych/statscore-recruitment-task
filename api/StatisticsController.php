@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Api;
 
-use App\FileStorage;
 use App\Match\Projection\StatisticsProjection;
+use App\Match\Repository\EventRepositoryInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -13,13 +13,12 @@ final class StatisticsController
 {
     public function __construct(
         private readonly ApiHelper $apiHelper,
-        private readonly StatisticsProjection $statisticsProjection
+        private readonly StatisticsProjection $statisticsProjection,
+        private readonly EventRepositoryInterface $eventRepository,
     ) {}
 
     public function get(Request $request, Response $response): Response
     {
-        $storage = new FileStorage(__DIR__ . '/../storage/events.txt');
-
         $queryParams = $request->getQueryParams();
         $matchId = $queryParams['match_id'] ?? null;
         $teamId = $queryParams['team_id'] ?? null;
@@ -32,11 +31,20 @@ final class StatisticsController
 
         $payload = ['match_id' => $matchId];
 
+        $events = $this->eventRepository->findByMatchId($matchId);
+
         if ($teamId) {
             $payload['team_id'] = $teamId;
-            $payload['statistics'] = $this->statisticsProjection->projectTeam($storage->getAll(), $matchId, $teamId);
+            $payload['statistics'] = $this->statisticsProjection->projectTeam(
+                $events,
+                $matchId, 
+                $teamId
+            );
         } else {
-            $payload['statistics'] = $this->statisticsProjection->projectMatch($storage->getAll(), $matchId);
+            $payload['statistics'] = $this->statisticsProjection->projectMatch(
+                $events, 
+                $matchId
+            );
         }
 
         return $this->apiHelper->getJsonResponse($response, $payload);

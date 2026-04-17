@@ -4,7 +4,7 @@ namespace Tests;
 
 use App\Common\EventInterface;
 use App\EventHandler;
-use App\FileStorage;
+use Persistence\FileStorage;
 use App\Match\Event\FoulEvent;
 use App\Match\Event\GoalEvent;
 use App\Match\Projection\StatisticsProjection;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Match\Handler;
 
-use App\FileStorage;
+use Persistence\FileStorage;
 use App\Match\Event\FoulEvent;
 
 final class FoulEventHandler
