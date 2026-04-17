@@ -15,6 +15,21 @@ final readonly class FoulEvent implements EventInterface
         public string $playerAtFault,
         public string $affectedPlayer,
         public MatchEventTime $eventTime,
-    ) {
+    ) {}
+
+    public function __serialize(): array
+    {
+        return [
+            'type' => 'foul',
+            'timestamp' => $this->eventTime->timestamp,
+            'data' => [
+                'match_id' => $this->matchId,
+                'team_id' => $this->teamAtFaultId,
+                'player_at_fault' => $this->playerAtFault,
+                'affected_player' => $this->affectedPlayer,
+                'second' => $this->eventTime->occurenceSeconds,
+                'minute' => $this->eventTime->occurenceMinutes,
+            ],
+        ];
     }
 }
