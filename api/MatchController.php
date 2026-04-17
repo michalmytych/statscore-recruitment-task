@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Api;
 
 use App\EventHandler;
-use App\Match\Events\MatchEventTime;
+use App\Match\VO\MatchEventTime;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -76,7 +76,6 @@ final class MatchController
         }
 
         $handlerResponse = $this->eventHandler->handleEvent($event);
-        $handlerResponse['message'] = 'Event saved successfully';
 
         return $this->apiHelper->getJsonResponse($response, $handlerResponse, 201);
     }

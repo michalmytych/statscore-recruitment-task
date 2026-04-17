@@ -7,7 +7,7 @@ use App\EventHandler;
 use App\FileStorage;
 use App\Match\Event\FoulEvent;
 use App\Match\Event\GoalEvent;
-use App\Match\Events\MatchEventTime;
+use App\Match\VO\MatchEventTime;
 use App\Match\Handler\FoulEventHandler;
 use App\Match\Handler\GoalEventHandler;
 use App\StatisticsManager;

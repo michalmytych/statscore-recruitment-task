@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Match\Event;
 
 use App\Common\EventInterface;
-use App\Match\Events\MatchEventTime;
+use App\Match\VO\MatchEventTime;
 
 final readonly class GoalEvent implements EventInterface
 {
