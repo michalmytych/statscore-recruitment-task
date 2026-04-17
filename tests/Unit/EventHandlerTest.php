@@ -8,22 +8,26 @@ use App\Match\Event\FoulEvent;
 use App\Match\Event\GoalEvent;
 use App\Match\Projection\StatisticsProjection;
 use App\Match\Repository\EventRepositoryInterface;
+use App\Match\Service\MatchEventPublisherInterface;
 use App\Match\VO\MatchEventTime;
 use App\Match\Handler\FoulEventHandler;
 use App\Match\Handler\GoalEventHandler;
 use Persistence\FileStorageEventRepository;
+use Persistence\NullMatchEventPublisher;
 use PHPUnit\Framework\TestCase;
 
 class EventHandlerTest extends TestCase
 {
     private string $eventsFile;
     private EventRepositoryInterface $eventRepository;
+    private MatchEventPublisherInterface $publisher;
 
     protected function setUp(): void
     {
         $this->eventsFile = __DIR__ . '/../../storage/events.txt';
         @unlink($this->eventsFile);
         $this->eventRepository = new FileStorageEventRepository();
+        $this->publisher = new NullMatchEventPublisher();
     }
 
     protected function tearDown(): void
@@ -34,8 +38,8 @@ class EventHandlerTest extends TestCase
     public function testHandleGoalEvent(): void
     {
         $handler = new EventHandler(
-            new FoulEventHandler($this->eventRepository),
-            new GoalEventHandler($this->eventRepository),
+            new FoulEventHandler($this->eventRepository, $this->publisher),
+            new GoalEventHandler($this->eventRepository, $this->publisher),
         );
 
         $event = new GoalEvent(
@@ -62,8 +66,8 @@ class EventHandlerTest extends TestCase
     public function testHandleUnsupportedEventType(): void
     {
         $handler = new EventHandler(
-            new FoulEventHandler($this->eventRepository),
-            new GoalEventHandler($this->eventRepository),
+            new FoulEventHandler($this->eventRepository, $this->publisher),
+            new GoalEventHandler($this->eventRepository, $this->publisher),
         );
 
         $event = new class implements EventInterface {
@@ -79,8 +83,8 @@ class EventHandlerTest extends TestCase
     public function testEventIsSavedToFile(): void
     {
         $handler = new EventHandler(
-            new FoulEventHandler($this->eventRepository),
-            new GoalEventHandler($this->eventRepository),
+            new FoulEventHandler($this->eventRepository, $this->publisher),
+            new GoalEventHandler($this->eventRepository, $this->publisher),
         );
 
         $handler->handleEvent(new GoalEvent(
@@ -105,8 +109,8 @@ class EventHandlerTest extends TestCase
     {
         $statisticsProjection = new StatisticsProjection();
         $handler = new EventHandler(
-            new FoulEventHandler($this->eventRepository),
-            new GoalEventHandler($this->eventRepository),
+            new FoulEventHandler($this->eventRepository, $this->publisher),
+            new GoalEventHandler($this->eventRepository, $this->publisher),
         );
 
         $result = $handler->handleEvent(new FoulEvent(
@@ -137,8 +141,8 @@ class EventHandlerTest extends TestCase
     {
         $statisticsProjection = new StatisticsProjection();
         $handler = new EventHandler(
-            new FoulEventHandler($this->eventRepository),
-            new GoalEventHandler($this->eventRepository),
+            new FoulEventHandler($this->eventRepository, $this->publisher),
+            new GoalEventHandler($this->eventRepository, $this->publisher),
         );
 
         $handler->handleEvent(new FoulEvent(
@@ -178,8 +182,8 @@ class EventHandlerTest extends TestCase
     {
         $statisticsProjection = new StatisticsProjection();
         $handler = new EventHandler(
-            new FoulEventHandler($this->eventRepository),
-            new GoalEventHandler($this->eventRepository),
+            new FoulEventHandler($this->eventRepository, $this->publisher),
+            new GoalEventHandler($this->eventRepository, $this->publisher),
         );
 
         $handler->handleEvent(new GoalEvent(
