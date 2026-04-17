@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Match\Handler;
 
-use Persistence\FileStorage;
 use App\Match\Event\FoulEvent;
+use App\Match\Repository\EventRepositoryInterface;
 
-final class FoulEventHandler
+final readonly class FoulEventHandler
 {
-    public function __construct() {}
+    public function __construct(
+        private EventRepositoryInterface $eventRepository,
+    ) {}
 
     public function __invoke(FoulEvent $event): array
     {
         $eventData = $event->__serialize();
 
-        // @TODO REFACTOR
-        $storage = new FileStorage(__DIR__ . '/../../../storage/events.txt');
-        $storage->save($eventData);
+        $this->eventRepository->saveEvent($eventData);
 
         return $eventData;
     }
