@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Live Statystyki Meczowe</title>
+</head>
+
+<body>
+    <h1>
+        Demo Live Statystyki Meczowe
+    </h1>
+
+
+    <button id="send">ping</button>
+    <pre id="log"></pre>
+    <script>
+        const log = document.getElementById("log");
+
+        function append(text) {
+            log.textContent += text + "\n";
+        }
+
+        const ws = new WebSocket("ws://localhost:8081");
+        ws.onopen = () => append("connected");
+        ws.onmessage = (event) => append("message: " + event.data);
+        ws.onclose = () => append("closed");
+        ws.onerror = () => append("error");
+
+        document.getElementById("send").addEventListener("click", () => {
+            ws.send("ping from browser");
+        });
+    </script>
+</body>
+
+</html>

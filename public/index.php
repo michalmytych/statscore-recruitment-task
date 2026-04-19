@@ -12,6 +12,8 @@ use App\Match\Repository\EventRepositoryInterface;
 use App\Match\Service\MatchEventPublisherInterface;
 use Persistence\NullMatchEventPublisher;
 use Persistence\SQLiteEventRepository;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 // Bootstrap the application
 $databasePath = __DIR__ . '/../db/events.sqlite';
@@ -31,5 +33,14 @@ $app = Bridge::create($containerBuilder->build());
 // Routing
 $app->post('/event', [MatchController::class, 'storeEvent']);
 $app->get('/statistics', [StatisticsController::class, 'get']);
+
+// Realtime client demo
+$app->get('/demo', function (Request $request, Response $response) {
+    $response->getBody()->write(
+        file_get_contents(__DIR__ . '/demo.html')
+    );
+    return $response->withHeader('Content-Type', 'text/html');
+    
+});
 
 $app->run();
