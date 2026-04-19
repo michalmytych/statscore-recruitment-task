@@ -8,13 +8,13 @@ wss.on("connection", (socket) => {
   socket.send(
     JSON.stringify({type: "connected",message: "server is working",})
   );
-//   socket.on("message", (message) => {
-//     console.log("msg from client",message.toString());
-//     socket.send(
-//       JSON.stringify({
-//                 type: "echo",
-//         message: message.toString()}));
-//   });
+  socket.on("message", (message) => {
+    console.log("msg from client",message.toString());
+    socket.send(
+      JSON.stringify({
+                type: "echo",
+        message: message.toString()}));
+  });
 
     socket.on("close", () => {
       console.log("client disconnected");
