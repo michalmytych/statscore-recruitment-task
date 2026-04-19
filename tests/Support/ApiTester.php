@@ -26,4 +26,13 @@ class ApiTester extends \Codeception\Actor
     /**
      * Define custom actions here
      */
+    public function resetEventDatabase(): void
+    {
+        // Just to keep tests isolated
+        @unlink(codecept_root_dir() . 'db/events.sqlite');
+        @unlink(codecept_root_dir() . 'db/events.sqlite-shm');
+        @unlink(codecept_root_dir() . 'db/events.sqlite-wal');
+
+        require codecept_root_dir() . 'db/migration.php';
+    }
 }

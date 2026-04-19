@@ -14,5 +14,6 @@ final readonly class PublishedEventDTO
     public function __construct(
         public string $eventType,
         public string $matchId,
+        public string $idempotencyKey
     ) {}
 }

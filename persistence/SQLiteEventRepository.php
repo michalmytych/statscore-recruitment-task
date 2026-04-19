@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Persistence;
 
+use App\Match\Exception\DuplicateEventException;
 use App\Match\Repository\EventRepositoryInterface;
 use PDO;
+use PDOException;
 use RuntimeException;
 
 final class SQLiteEventRepository implements EventRepositoryInterface
@@ -73,7 +75,17 @@ final class SQLiteEventRepository implements EventRepositoryInterface
         $statement->bindValue(':idempotency_key', is_string($idempotencyKey) ? $idempotencyKey : null, is_string($idempotencyKey) ? PDO::PARAM_STR : PDO::PARAM_NULL);
         $statement->bindValue(':payload_json', $payloadJson, PDO::PARAM_STR);
 
-        $statement->execute();
+        // In real world this would be better placed in domain service as this is not a repo implementation detail,
+        // but for the sake of demonstration this will do
+        try {
+            $statement->execute();
+        } catch (PDOException $e) {
+            $isIdempotencyConflict = ($e->errorInfo[1] ?? null) === 19 && str_contains($e->getMessage(), 'events.idempotency_key');
+            if ($isIdempotencyConflict) {
+                throw new DuplicateEventException();
+            }
+            throw $e;
+        }
     }
 
     public function findByMatchId(string $matchId): array
