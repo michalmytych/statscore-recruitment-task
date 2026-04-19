@@ -3,10 +3,14 @@ FROM php:8.4-cli
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
+     libonig-dev \
     libsqlite3-dev \
     sqlite3 \
     unzip \
-    && docker-php-ext-install pdo_sqlite \
+    && docker-php-ext-install \
+        pdo_sqlite \
+        mbstring \ 
+        sockets \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer

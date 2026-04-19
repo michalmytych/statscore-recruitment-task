@@ -10,7 +10,7 @@ use DI\ContainerBuilder;
 use DI\Bridge\Slim\Bridge;
 use App\Match\Repository\EventRepositoryInterface;
 use App\Match\Service\MatchEventPublisherInterface;
-use Persistence\NullMatchEventPublisher;
+use MQ\RabbitMQMatchEventPublisher;
 use Persistence\SQLiteEventRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -25,7 +25,7 @@ $containerBuilder->addDefinitions([
             return new SQLiteEventRepository($databasePath);
         }
     ),
-    MatchEventPublisherInterface::class => \DI\autowire(NullMatchEventPublisher::class),
+    MatchEventPublisherInterface::class => \DI\autowire(RabbitMQMatchEventPublisher::class),
 ]);
 
 $app = Bridge::create($containerBuilder->build());
