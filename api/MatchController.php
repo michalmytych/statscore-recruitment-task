@@ -8,6 +8,7 @@ use App\EventHandler;
 use App\Match\VO\MatchEventTime;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Match\Exception\DuplicateEventException;
 
 final class MatchController
 {
@@ -75,7 +76,16 @@ final class MatchController
             ], 400);
         }
 
-        $handlerResponse = $this->eventHandler->handleEvent($event);
+        try {
+            $handlerResponse = $this->eventHandler->handleEvent($event);
+        } catch (DuplicateEventException) {
+            return $this->apiHelper->getJsonResponse($response, [
+                'status' => 'error',
+                'details' => [
+                    'Event with the same details exists. This is likely a duplicate event submission.'
+                ],
+            ], 409);
+        }
 
         return $this->apiHelper->getJsonResponse($response, $handlerResponse, 201);
     }
