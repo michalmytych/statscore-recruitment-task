@@ -127,12 +127,11 @@
             <div class="toolbar">
                 <label for="matchId">Mecz</label>
                 <input id="matchId" type="text" value="m1" placeholder="np. m1">
-                <button id="refreshStats" type="button">Odswiez statystyki</button>
-                <button id="send" type="button">ping</button>
+                <button id="refreshStats" type="button">Odswiez statystyki ręcznie</button>
             </div>
 
             <p class="hint">
-                Tabela pokazuje aktualne statystyki dla calego meczu. Po przyjsciu eventu z WebSocket dane odswiezaja sie automatycznie.
+                Tabela odświeża się po update z serwera ws
             </p>
             <p class="meta" id="statsMeta">Statystyki nie zostaly jeszcze pobrane.</p>
 
@@ -252,10 +251,6 @@
         };
         ws.onclose = () => append("closed");
         ws.onerror = () => append("error");
-
-        document.getElementById("send").addEventListener("click", () => {
-            ws.send("ping from browser");
-        });
 
         refreshStatsButton.addEventListener("click", () => {
             fetchStatistics(matchIdInput.value);
