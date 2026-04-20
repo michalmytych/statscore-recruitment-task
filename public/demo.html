@@ -239,11 +239,16 @@
 
             try {
                 const parsed = JSON.parse(event.data);
-                const matchId = parsed?.payload?.matchId;
+                const incomingMatchId = parsed?.payload?.matchId;
+                const selectedMatchId = matchIdInput.value.trim();
 
-                if (typeof matchId === "string" && matchId.length > 0) {
-                    matchIdInput.value = matchId;
-                    await fetchStatistics(matchId);
+                // Fixed stupid bug with selecting bad matchId and making nonsense request
+                if (
+                    typeof incomingMatchId === "string" &&
+                    incomingMatchId.length > 0 &&
+                    incomingMatchId === selectedMatchId
+                ) {
+                    await fetchStatistics(selectedMatchId);
                 }
             } catch (_error) {
                 // Some websocket messages may be plain text, logs are enough in that case.
