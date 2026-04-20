@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Persistence;
+namespace MQ;
 
 use App\Match\Service\MatchEventPublisherInterface;
 use App\Match\Service\PublishedEventDTO;

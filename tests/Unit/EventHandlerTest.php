@@ -14,7 +14,7 @@ use App\Match\Handler\FoulEventHandler;
 use App\Match\Handler\GoalEventHandler;
 use App\Match\Service\EventIdempotencyKeyFactory;
 use PDO;
-use Persistence\NullMatchEventPublisher;
+use MQ\NullMatchEventPublisher;
 use Persistence\SQLiteEventRepository;
 use PHPUnit\Framework\TestCase;
 
