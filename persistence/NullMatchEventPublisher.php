@@ -11,6 +11,7 @@ final class NullMatchEventPublisher implements MatchEventPublisherInterface
 {
     public function publish(PublishedEventDTO $dto): void
     {
-        // @Todo
+        // Actually that was placeholder and I was about to trash it
+        // but it appears that it's a perfect test fake
     }
 }

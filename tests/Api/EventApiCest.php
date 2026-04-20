@@ -10,7 +10,6 @@ class EventApiCest
     {
         // Clean up storage files before each test
         $I->resetEventDatabase();
-        $I->deleteFile('storage/statistics.txt'); // @todo rm
     }
 
     public function testFoulEvent(ApiTester $I)

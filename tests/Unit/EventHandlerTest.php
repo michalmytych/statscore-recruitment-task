@@ -13,29 +13,37 @@ use App\Match\VO\MatchEventTime;
 use App\Match\Handler\FoulEventHandler;
 use App\Match\Handler\GoalEventHandler;
 use App\Match\Service\EventIdempotencyKeyFactory;
-use Persistence\FileStorageEventRepository;
+use PDO;
 use Persistence\NullMatchEventPublisher;
+use Persistence\SQLiteEventRepository;
 use PHPUnit\Framework\TestCase;
 
 class EventHandlerTest extends TestCase
 {
-    private string $eventsFile;
+    private string $databasePath;
     private EventRepositoryInterface $eventRepository;
     private MatchEventPublisherInterface $publisher;
     private EventIdempotencyKeyFactory $idempotencyKeyFactory;
 
     protected function setUp(): void
     {
-        $this->eventsFile = __DIR__ . '/../../storage/events.txt';
-        @unlink($this->eventsFile);
-        $this->eventRepository = new FileStorageEventRepository();
-        $this->publisher = new NullMatchEventPublisher();
+        $this->databasePath = sys_get_temp_dir() . '/football_events_handler_test.sqlite';
+
+        @unlink($this->databasePath);
+        @unlink($this->databasePath . '-shm');
+        @unlink($this->databasePath . '-wal');
+
+        $this->createSchema();
+        $this->eventRepository = new SQLiteEventRepository($this->databasePath);
+        $this->publisher = new NullMatchEventPublisher(); // Test fake
         $this->idempotencyKeyFactory = new EventIdempotencyKeyFactory();
     }
 
     protected function tearDown(): void
     {
-        @unlink($this->eventsFile);
+        @unlink($this->databasePath);
+        @unlink($this->databasePath . '-shm');
+        @unlink($this->databasePath . '-wal');
     }
 
     public function testHandleGoalEvent(): void
@@ -83,7 +91,7 @@ class EventHandlerTest extends TestCase
         $this->assertSame('Unsupported event type', $result['reason']);
     }
 
-    public function testEventIsSavedToFile(): void
+    public function testEventIsSavedToDatabase(): void
     {
         $handler = new EventHandler(
             new FoulEventHandler($this->eventRepository, $this->publisher, $this->idempotencyKeyFactory),
@@ -208,5 +216,24 @@ class EventHandlerTest extends TestCase
         );
 
         $this->assertSame(1, $teamStats['goals']);
+    }
+
+    private function createSchema(): void
+    {
+        $connection = new PDO('sqlite:' . $this->databasePath);
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connection->exec(
+            'CREATE TABLE IF NOT EXISTS events (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                event_type TEXT NOT NULL,
+                match_id TEXT NOT NULL,
+                event_minute INTEGER NOT NULL,
+                event_second INTEGER NOT NULL,
+                event_timestamp INTEGER,
+                idempotency_key TEXT UNIQUE NOT NULL,
+                payload_json TEXT NOT NULL,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )'
+        );
     }
 }

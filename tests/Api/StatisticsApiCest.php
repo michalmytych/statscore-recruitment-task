@@ -10,7 +10,6 @@ class StatisticsApiCest
     {
         // Clean up storage files before each test
         $I->resetEventDatabase();
-        $I->deleteFile('storage/statistics.txt'); // @todo rm
     }
 
     public function testGetTeamStatistics(ApiTester $I)
