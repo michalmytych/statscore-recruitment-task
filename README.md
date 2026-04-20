@@ -51,6 +51,7 @@ I've used `ChatGPT`
 - Some advices with docker.
 - Advices with AMQP.
 - Advices with `ws` js code.
+
 I also often use `Copilot` for better autocompletion.
 
 Basically everything I came up with and wrote in PHP comes from human brain, but I did not hesitate to use AI to things like simple JS/HTML or Docker config details/tweaking.
