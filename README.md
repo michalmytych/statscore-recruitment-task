@@ -41,10 +41,12 @@ __Here you can find the [docs of new API: REQUESTS.md](/REQUESTS.md)__
 - [x] Communication is reliable and consistent
 
 ## Use of AI
+
 I've used `Codex` for:
 - Prettifying UI of html demo.
 - Searching for unused code, typo-s / finding stupic bugs.
 - Fixing my boilerplate validation.
+
 I've used `ChatGPT`
 - Some advices with docker.
 - Advices with AMQP.
