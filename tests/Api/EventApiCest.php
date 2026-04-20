@@ -9,8 +9,7 @@ class EventApiCest
     public function _before(ApiTester $I)
     {
         // Clean up storage files before each test
-        $I->deleteFile('storage/events.txt');
-        $I->deleteFile('storage/statistics.txt');
+        $I->resetEventDatabase();
     }
 
     public function testFoulEvent(ApiTester $I)
@@ -18,11 +17,13 @@ class EventApiCest
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPOST('/event', [
             'type' => 'foul',
-            'player' => 'William Saliba',
-            'team_id' => 'arsenal',
+            'affected_player' => 'William Saliba',
+            'player_at_fault' => 'Player at fault',
+            'team_at_fault_id' => 'arsenal',
             'match_id' => 'm1',
             'minute' => 45,
-            'second' => 34
+            'second' => 34,
+            'timestamp' => time()
         ]);
         
         $I->seeResponseCodeIs(201);
@@ -34,21 +35,58 @@ class EventApiCest
         $I->seeResponseJsonMatchesJsonPath('$.event.type', 'foul');
     }
 
+    public function testDuplicatedEventRuleCheck(ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+
+        $payload = [
+            'type' => 'foul',
+            'affected_player' => 'William Saliba',
+            'player_at_fault' => 'Player at fault',
+            'team_at_fault_id' => 'arsenal',
+            'match_id' => 'm1',
+            'minute' => 45,
+            'second' => 34,
+            'timestamp' => time()
+        ];
+        
+        // Create first event
+        $I->sendPOST('/event', $payload);
+
+        // Create another event with same data to trigger duplicate check
+        $I->sendPOST('/event', $payload);        
+        
+        $I->seeResponseCodeIs(409);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson([
+            'status' => 'error',
+            'details' => [
+                'Event with the same details exists. This is likely a duplicate event submission.'
+            ]
+        ]);
+    }    
+
     public function testFoulEventWithoutRequiredFields(ApiTester $I)
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPOST('/event', [
             'type' => 'foul',
-            'player' => 'William Saliba',
-                'minute' => 45,
-            'second' => 34
-            // Missing team_id and match_id
+            'player_at_fault' => 'William Saliba',
+            'affected_player' => 'William Saliba',
+            'minute' => 45,
+            'second' => 34,
+            'timestamp' => time()
+            // Missing team_at_fault_id and match_id
         ]);
         
         $I->seeResponseCodeIs(400);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([
-            'error' => 'match_id and team_id are required for foul events'
+            'error' => 'Validation failed',
+            'details' => [
+                'Field "match_id" is required and must be a non-empty string',
+                'Field "team_at_fault_id" is required and must be a non-empty string'
+            ]
         ]);
     }
 

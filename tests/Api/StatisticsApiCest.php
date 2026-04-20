@@ -9,8 +9,7 @@ class StatisticsApiCest
     public function _before(ApiTester $I)
     {
         // Clean up storage files before each test
-        $I->deleteFile('storage/events.txt');
-        $I->deleteFile('storage/statistics.txt');
+        $I->resetEventDatabase();
     }
 
     public function testGetTeamStatistics(ApiTester $I)
@@ -19,22 +18,28 @@ class StatisticsApiCest
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPOST('/event', [
             'type' => 'foul',
-            'player' => 'William Saliba',
-            'team_id' => 'arsenal',
+            'affected_player' => 'Robert lewnandowski',
+            'player_at_fault' => 'William Saliba',
+            'team_at_fault_id' => 'arsenal',
             'match_id' => 'm1',
             'minute' => 15,
-            'second' => 34
+            'second' => 34,
+            'timestamp' => time(),
         ]);
+        $I->seeResponseCodeIs(201);
         
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPOST('/event', [
             'type' => 'foul',
-            'player' => 'Gabriel Jesus',
-            'team_id' => 'arsenal',
+            'affected_player' => 'Paul Anka',
+            'player_at_fault' => 'Gabriel Jesus',
+            'team_at_fault_id' => 'arsenal',
             'match_id' => 'm1',
             'minute' => 30,
-            'second' => 33
+            'second' => 33,
+            'timestamp' => time(),
         ]);
+        $I->seeResponseCodeIs(201);
         
         // Now get team statistics
         $I->sendGET('/statistics?match_id=m1&team_id=arsenal');
@@ -56,22 +61,28 @@ class StatisticsApiCest
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPOST('/event', [
             'type' => 'foul',
-            'player' => 'William Saliba',
-            'team_id' => 'arsenal',
+            'affected_player' => 'Bukayo Saka',
+            'player_at_fault' => 'William Saliba',
+            'team_at_fault_id' => 'arsenal',
             'match_id' => 'm1',
             'minute' => 15,
-            'second' => 34
+            'second' => 34,
+            'timestamp' => time(),
         ]);
+        $I->seeResponseCodeIs(201);
         
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPOST('/event', [
             'type' => 'foul',
-            'player' => 'Virgil van Dijk',
-            'team_id' => 'liverpool',
+            'affected_player' => 'Mohamed Salah',
+            'player_at_fault' => 'Virgil van Dijk',
+            'team_at_fault_id' => 'liverpool',
             'match_id' => 'm1',
             'minute' => 30,
-            'second' => 33
+            'second' => 33,
+            'timestamp' => time(),
         ]);
+        $I->seeResponseCodeIs(201);
         
         // Get all match statistics
         $I->sendGET('/statistics?match_id=m1');

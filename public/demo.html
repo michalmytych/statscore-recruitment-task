@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Live Statystyki Meczowe</title>
+    <style>
+        body {
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            background: linear-gradient(180deg, #f4fff4 0%, #ddf2dd 100%);
+            color: #103118;
+            margin: 0;
+            padding: 24px;
+        }
+
+        main {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            border: 3px solid #1f6f3f;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 12px 30px rgba(31, 111, 63, 0.12);
+            margin-bottom: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        button {
+            font: inherit;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 2px solid #1f6f3f;
+        }
+
+        button {
+            background: #1f6f3f;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #185732;
+        }
+
+        .hint,
+        .meta {
+            margin: 0 0 12px;
+        }
+
+        .meta {
+            color: #2d6140;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        thead {
+            background: #1f6f3f;
+            color: #fff;
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid #d2e8d5;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f4fbf5;
+        }
+
+        tbody tr:hover {
+            background: #e6f5e8;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #55725d;
+            font-style: italic;
+        }
+
+        pre {
+            margin: 0;
+            background: #102917;
+            color: #d9ffe1;
+            padding: 16px;
+            border-radius: 12px;
+            min-height: 180px;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>
+            Demo Live Statystyki Meczowe
+        </h1>
+
+        <section class="card">
+            <div class="toolbar">
+                <label for="matchId">Mecz</label>
+                <input id="matchId" type="text" value="m1" placeholder="np. m1">
+                <button id="refreshStats" type="button">Odswiez statystyki ręcznie</button>
+            </div>
+
+            <p class="hint">
+                Tabela odświeża się po update z serwera ws
+            </p>
+            <p class="meta" id="statsMeta">Statystyki nie zostaly jeszcze pobrane.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Druzyna</th>
+                        <th>Gole</th>
+                        <th>Faule</th>
+                    </tr>
+                </thead>
+                <tbody id="statsTableBody">
+                    <tr>
+                        <td class="empty-state" colspan="3">Brak danych do wyswietlenia.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2>Log zdarzen</h2>
+            <pre id="log"></pre>
+        </section>
+    </main>
+
+    <script>
+        const log = document.getElementById("log");
+        const matchIdInput = document.getElementById("matchId");
+        const refreshStatsButton = document.getElementById("refreshStats");
+        const statsMeta = document.getElementById("statsMeta");
+        const statsTableBody = document.getElementById("statsTableBody");
+
+        const initialMatchId = new URLSearchParams(window.location.search).get("match_id");
+        if (initialMatchId) {
+            matchIdInput.value = initialMatchId;
+        }
+
+        function append(text) {
+            log.textContent += text + "\n";
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#39;");
+        }
+
+        function renderStatisticsTable(statistics) {
+            const teams = Object.entries(statistics ?? {});
+
+            if (teams.length === 0) {
+                statsTableBody.innerHTML = `
+                    <tr>
+                        <td class="empty-state" colspan="3">Brak statystyk dla wybranego meczu.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            statsTableBody.innerHTML = teams.map(([teamId, teamStats]) => `
+                <tr>
+                    <td>${escapeHtml(teamId)}</td>
+                    <td>${teamStats.goals ?? 0}</td>
+                    <td>${teamStats.fouls ?? 0}</td>
+                </tr>
+            `).join("");
+        }
+
+        async function fetchStatistics(matchId) {
+            const trimmedMatchId = matchId.trim();
+
+            if (!trimmedMatchId) {
+                statsMeta.textContent = "Podaj match_id, aby pobrac statystyki.";
+                renderStatisticsTable({});
+                return;
+            }
+
+            statsMeta.textContent = `Pobieranie statystyk dla meczu ${trimmedMatchId}...`;
+
+            try {
+                const response = await fetch(`/statistics?match_id=${encodeURIComponent(trimmedMatchId)}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const payload = await response.json();
+
+                renderStatisticsTable(payload.statistics);
+                statsMeta.textContent = `Statystyki meczu ${payload.match_id} odswiezone o ${new Date().toLocaleTimeString()}.`;
+            } catch (error) {
+                renderStatisticsTable({});
+                statsMeta.textContent = `Nie udalo sie pobrac statystyk dla meczu ${trimmedMatchId}.`;
+                append(`stats error: ${error.message}`);
+            }
+        }
+
+        const ws = new WebSocket("ws://localhost:8081");
+        ws.onopen = () => append("connected");
+        ws.onmessage = async (event) => {
+            append("message: " + event.data);
+
+            try {
+                const parsed = JSON.parse(event.data);
+                const matchId = parsed?.payload?.matchId;
+
+                if (typeof matchId === "string" && matchId.length > 0) {
+                    matchIdInput.value = matchId;
+                    await fetchStatistics(matchId);
+                }
+            } catch (_error) {
+                // Some websocket messages may be plain text, logs are enough in that case.
+            }
+        };
+        ws.onclose = () => append("closed");
+        ws.onerror = () => append("error");
+
+        refreshStatsButton.addEventListener("click", () => {
+            fetchStatistics(matchIdInput.value);
+        });
+
+        matchIdInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                fetchStatistics(matchIdInput.value);
+            }
+        });
+
+        fetchStatistics(matchIdInput.value);
+    </script>
+</body>
+
+</html>

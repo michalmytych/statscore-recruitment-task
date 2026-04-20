@@ -1,0 +1,13 @@
+vendor
+./vendor
+.DS_Store
+.vscode
+.idea
+db/events.sqlite
+db/events.sqlite-shm
+db/events.sqlite-wal
+
+.phpunit.result.cache
+
+./storage/*
+events.sqlite

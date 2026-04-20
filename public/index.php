@@ -1,67 +1,46 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+declare(strict_types=1);
 
-use App\EventHandler;
-use App\StatisticsManager;
+require __DIR__ . '/../vendor/autoload.php';
 
-header('Content-Type: application/json');
+use Api\MatchController;
+use Api\StatisticsController;
+use DI\ContainerBuilder;
+use DI\Bridge\Slim\Bridge;
+use App\Match\Repository\EventRepositoryInterface;
+use App\Match\Service\MatchEventPublisherInterface;
+use MQ\RabbitMQMatchEventPublisher;
+use Persistence\SQLiteEventRepository;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
-// Simple routing
-$method = $_SERVER['REQUEST_METHOD'];
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+// Bootstrap the application
+$databasePath = __DIR__ . '/../db/events.sqlite';
 
-if ($method === 'POST' && $path === '/event') {
-    $input = file_get_contents('php://input');
-    $data = json_decode($input, true);
-    
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Invalid JSON']);
-        exit;
-    }
-    
-    $handler = new EventHandler(__DIR__ . '/../storage/events.txt');
-    
-    try {
-        $result = $handler->handleEvent($data);
-        http_response_code(201);
-        echo json_encode($result);
-    } catch (Exception $e) {
-        http_response_code(400);
-        echo json_encode(['error' => $e->getMessage()]);
-    }
-} elseif ($method === 'GET' && $path === '/statistics') {
-    $statsManager = new StatisticsManager(__DIR__ . '/../storage/statistics.txt');
-    
-    $matchId = $_GET['match_id'] ?? null;
-    $teamId = $_GET['team_id'] ?? null;
-    
-    try {
-        if ($matchId && $teamId) {
-            // Get team statistics for specific match
-            $stats = $statsManager->getTeamStatistics($matchId, $teamId);
-            echo json_encode([
-                'match_id' => $matchId,
-                'team_id' => $teamId,
-                'statistics' => $stats
-            ]);
-        } elseif ($matchId) {
-            // Get all team statistics for specific match
-            $stats = $statsManager->getMatchStatistics($matchId);
-            echo json_encode([
-                'match_id' => $matchId,
-                'statistics' => $stats
-            ]);
-        } else {
-            http_response_code(400);
-            echo json_encode(['error' => 'match_id is required']);
+$containerBuilder = new ContainerBuilder();
+$containerBuilder->addDefinitions([
+    EventRepositoryInterface::class => \DI\factory(
+        static function () use ($databasePath): SQLiteEventRepository {
+            return new SQLiteEventRepository($databasePath);
         }
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode(['error' => $e->getMessage()]);
-    }
-} else {
-    http_response_code(404);
-    echo json_encode(['error' => 'Not found']);
-}
+    ),
+    MatchEventPublisherInterface::class => \DI\autowire(RabbitMQMatchEventPublisher::class),
+]);
+
+$app = Bridge::create($containerBuilder->build());
+
+// Routing
+$app->post('/event', [MatchController::class, 'storeEvent']);
+$app->get('/statistics', [StatisticsController::class, 'get']);
+
+// Realtime client demo
+$app->get('/demo', function (Request $request, Response $response) {
+    $response->getBody()->write(
+        file_get_contents(__DIR__ . '/demo.html')
+    );
+    return $response->withHeader('Content-Type', 'text/html');
+    
+});
+
+$app->run();

@@ -2,48 +2,52 @@
 
 namespace App;
 
-class EventHandler
+use App\Common\EventInterface;
+use App\Match\Event\FoulEvent;
+use App\Match\Event\GoalEvent;
+use App\Match\Handler\FoulEventHandler;
+use App\Match\Handler\GoalEventHandler;
+
+final readonly class EventHandler
 {
-    private FileStorage $storage;
-    private StatisticsManager $statisticsManager;
-    
-    public function __construct(string $storagePath, ?StatisticsManager $statisticsManager = null)
+    public function __construct(
+        private readonly FoulEventHandler $foulEventHandler,
+        private readonly GoalEventHandler $goalEventHandler,
+    ) {}
+
+    // Simple solution without event->handler mapping
+    public function handleEvent(EventInterface $event): array
     {
-        $this->storage = new FileStorage($storagePath);
-        $this->statisticsManager = $statisticsManager ?? new StatisticsManager(__DIR__ . '/../storage/statistics.txt');
-    }
-    
-    public function handleEvent(array $data): array
-    {
-        if (!isset($data['type'])) {
-            throw new \InvalidArgumentException('Event type is required');
-        }
-        
-        $event = [
-            'type' => $data['type'],
-            'timestamp' => time(),
-            'data' => $data
-        ];
-        
-        $this->storage->save($event);
-        
-        // Update statistics for foul events
-        if ($data['type'] === 'foul') {
-            if (!isset($data['match_id']) || !isset($data['team_id'])) {
-                throw new \InvalidArgumentException('match_id and team_id are required for foul events');
-            }
-            
-            $this->statisticsManager->updateTeamStatistics(
-                $data['match_id'],
-                $data['team_id'],
-                'fouls'
+        if ($event instanceof FoulEvent) {
+            return $this->getEventSuccessResponse(
+                $this->foulEventHandler->__invoke($event)
             );
         }
-        
+
+        if ($event instanceof GoalEvent) {
+            return $this->getEventSuccessResponse(
+                $this->goalEventHandler->__invoke($event)
+            );
+        }
+
+        return $this->getFailedErrorHandlingResponse('Unsupported event type');
+    }
+
+    private function getEventSuccessResponse(array $eventData): array
+    {
         return [
             'status' => 'success',
             'message' => 'Event saved successfully',
-            'event' => $event
+            'event' => $eventData
         ];
     }
+
+    private function getFailedErrorHandlingResponse(string $reason): array
+    {
+        return [
+            'status' => 'error',
+            'message' => 'Event processing failed',
+            'reason' => $reason
+        ];
+    }    
 }
