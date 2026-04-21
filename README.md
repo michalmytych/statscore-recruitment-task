@@ -1,5 +1,17 @@
 # Solution for recruitment task: Football Events Application
 
+## Architecture approach
+Because I decided to focus mainly on meeting the business requirements of the project, I avoided adding complex architecture and modeling. Instead, I chose a simpler approach that is still clean and correct in my opinion.
+
+At the same time, I’d like to explain what approaches I would use in a more developed version of this project:
+	•	Event Sourcing seems like a good fit, because it naturally allows building complex projections from different types of events. I utilized model which is a simple example of event-first approach: calculating statistics as live events projection.
+	•	CQRS would also work well, as it clearly separates read and write models—especially since these processes would likely be handled by different business actors. For example, data providers could handle statistics updates, while SaaS clients would focus on reading data.
+	•	DDD (Domain-Driven Design) also makes sense, as it helps with clean implementation of business rules. It is also a popular standard, which makes the code easier to understand for other developers.
+
+In this solution, however, I focused on the technical requirements instead of adding more abstraction layers. At the same time, I kept a clear separation between application code and domain processes (event handling), so the structure remains safe and maintainable.
+
+All simplifications are explained in code comments (although in a real project I would avoid adding so many comments). I also proposed an infrastructure-level approach by introducing a message broker and meeting the real-time requirement using WebSockets.
+
 ## Key decisions & changes
 * Completely removed `statistics` as a persisted image of events - instead I introduced generating them on-the-fly as a projection of events.
 This eliminates a lot of problems & complications with data integrity `events state <-> statistics state`. The cost of this decision is that calculations are performed on every request but as the feature seems reads-heavy and not really writes-heavy, caching could solve this problem.
